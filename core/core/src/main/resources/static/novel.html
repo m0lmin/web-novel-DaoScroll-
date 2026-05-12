@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="uk" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Деталі сувою - DaoScrolls</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg border-bottom p-3" style="background-color: var(--navbar-bg);">
+    <div class="container">
+        <a class="navbar-brand fw-bold text-primary" href="index.html">📜 DaoScrolls</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" href="catalog.html">Каталог</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Форум</a></li>
+            </ul>
+            <div class="d-flex align-items-center">
+                <button class="btn btn-outline-secondary btn-sm me-3" onclick="toggleTheme()" title="Змінити тему">
+                    <i class="bi bi-moon-fill"></i>
+                </button>
+                <a class="btn btn-outline-primary btn-sm" href="auth.html" id="navAuthBtn">Увійти</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card simple-card">
+                <img id="novelCover" src="" class="card-img-top" alt="Обкладинка" style="height: auto; max-height: 500px; object-fit: cover;" onerror="this.src='https://picsum.photos/seed/fallback/300/400'">
+                <div class="card-body text-center">
+                    <span id="novelGenre" class="badge bg-primary mb-2">Завантаження...</span>
+                    <p class="small text-muted fw-bold" id="novelAuthor">Автор: ...</p>
+                    <button class="btn btn-primary w-100 mt-2">🔖 Додати в бібліотеку</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card p-4 simple-card mb-4">
+                <h2 id="novelTitle" class="fw-bold text-primary mb-3">Завантаження...</h2>
+                <h5 class="border-bottom pb-2">Опис (Пролог)</h5>
+                <p id="novelDescription" class="text-muted mt-3" style="line-height: 1.6; text-align: justify;"></p>
+            </div>
+
+            <div class="card p-4 simple-card">
+                <h5 class="fw-bold mb-3 border-bottom pb-2">Список розділів</h5>
+                <div id="chaptersList" class="list-group list-group-flush">
+                    <div class="text-center text-muted p-3">Завантаження сувоїв...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/main.js"></script>
+<script>
+    const novelId = new URLSearchParams(window.location.search).get('id');
+
+    window.onload = async () => {
+        // Перевірка, чи юзер залогінений (щоб змінити кнопку в шапці)
+        const userId = localStorage.getItem('userId');
+        if (userId) {
+            const authBtn = document.getElementById('navAuthBtn');
+            authBtn.textContent = "Мій Профіль";
+            authBtn.href = "profile.html";
+            authBtn.className = "btn btn-success btn-sm";
+        }
+
+        if (!novelId) {
+            document.getElementById('novelTitle').innerText = "Помилка: Сувій не знайдено";
+            return;
+        }
+
+        try {
+            // 1. Завантаження деталей книги
+            const res = await fetch(`http://localhost:8081/api/novels/${novelId}`);
+            if (!res.ok) throw new Error("Книгу не знайдено");
+            const novel = await res.json();
+
+            document.getElementById('novelTitle').innerText = novel.title;
+            document.getElementById('novelAuthor').innerText = `Автор: ${novel.author ? novel.author.username : 'Невідомий'}`;
+            document.getElementById('novelGenre').innerText = novel.genre;
+            document.getElementById('novelDescription').innerText = novel.description || 'Опис відсутній.';
+
+            // Надійна генерація картинки
+            const coverUrl = novel.coverUrl ? novel.coverUrl : `https://picsum.photos/seed/dao${novel.id}/300/400`;
+            document.getElementById('novelCover').src = coverUrl;
+
+            // 2. Завантаження розділів
+            const resCh = await fetch(`http://localhost:8081/api/chapters/novel/${novelId}`);
+            const chapters = await resCh.json();
+
+            const list = document.getElementById('chaptersList');
+            list.innerHTML = ''; // Очищаємо текст "Завантаження..."
+
+            if (chapters.length === 0) {
+                list.innerHTML = `<div class="text-center text-muted p-3">Розділів ще немає.</div>`;
+                return;
+            }
+
+            // Вивід списку розділів
+            chapters.forEach(ch => {
+                list.innerHTML += `
+                        <a href="read.html?chapterId=${ch.id}&novelId=${novelId}"
+                           class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3">
+                            <span class="fw-bold">Розділ ${ch.chapterNumber}: ${ch.title}</span>
+                            <span class="btn btn-sm btn-outline-secondary">Читати</span>
+                        </a>`;
+            });
+        } catch (e) {
+            console.error(e);
+            document.getElementById('novelTitle').innerText = "Помилка завантаження даних";
+        }
+    };
+</script>
+</body>
+</html>

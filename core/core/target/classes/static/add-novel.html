@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="uk" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Додати новелу - DaoScrolls</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg border-bottom p-3" style="background-color: var(--navbar-bg);">
+    <div class="container">
+        <a class="navbar-brand fw-bold text-primary" href="index.html">📜 DaoScrolls</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" href="catalog.html">Каталог</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Форум</a></li>
+            </ul>
+            <div class="d-flex align-items-center">
+                <button class="btn btn-outline-secondary btn-sm me-3" onclick="toggleTheme()" title="Змінити тему">
+                    <i class="bi bi-moon-fill"></i>
+                </button>
+                <a class="btn btn-outline-primary btn-sm" href="author-panel.html">До панелі автора</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-5 mb-5">
+    <div class="card simple-card p-4 mx-auto" style="max-width: 600px;">
+        <h4 class="mb-4 border-bottom pb-2">Створення нової книги</h4>
+
+        <form onsubmit="alert('Новелу збережено!'); window.location.href='author-panel.html'; return false;">
+            <div class="mb-3">
+                <label class="form-label fw-bold">Назва новели</label>
+                <input type="text" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-bold">Жанр</label>
+                <select class="form-select" required>
+                    <option value="Xianxia">Xianxia</option>
+                    <option value="Wuxia">Wuxia</option>
+                    <option value="LitRPG">LitRPG</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-bold">Опис</label>
+                <textarea class="form-control" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Опублікувати</button>
+        </form>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

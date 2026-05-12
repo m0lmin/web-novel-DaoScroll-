@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="uk" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DaoScrolls - Головна</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg border-bottom p-3" style="background-color: var(--navbar-bg);">
+  <div class="container">
+    <a class="navbar-brand fw-bold text-primary" href="index.html">📜 DaoScrolls</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><a class="nav-link" href="catalog.html">Каталог</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Форум</a></li>
+      </ul>
+      <div class="d-flex align-items-center">
+        <input type="text" id="simpleSearchInput" class="form-control form-control-sm me-3" placeholder="Швидкий пошук...">
+        <button class="btn btn-outline-secondary btn-sm me-3" onclick="toggleTheme()"><i class="bi bi-moon"></i></button>
+        <a class="btn btn-primary btn-sm" href="auth.html">Увійти</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-5 mb-5">
+
+  <h3 class="mb-4 border-bottom pb-2">Останні надходження</h3>
+
+  <div class="row g-4" id="simpleGrid">
+    <div class="col-12 text-center text-muted" id="loadingText">Завантаження даних з сервера...</div>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/main.js"></script>
+<script>
+  window.onload = async () => {
+    try {
+      const res = await fetch("http://localhost:8081/api/novels");
+      const novels = await res.json();
+
+      const grid = document.getElementById('simpleGrid');
+      grid.innerHTML = ''; // Очищаємо текст завантаження
+
+      // Виводимо тільки перші 8 штук для головної
+      novels.slice(0, 8).forEach(n => {
+        const img = n.coverUrl || `https://picsum.photos/seed/dao${n.id}/300/400`;
+
+        grid.innerHTML += `
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+                            <div class="simple-card h-100">
+                                <img src="${img}" class="card-img-top" alt="Cover">
+                                <div class="card-body">
+                                    <span class="badge bg-secondary mb-2">${n.genre}</span>
+                                    <h6 class="fw-bold">${n.title}</h6>
+                                    <p class="small text-muted mb-3">Автор: ${n.author ? n.author.username : 'Admin'}</p>
+                                    <a href="novel.html?id=${n.id}" class="btn btn-outline-primary w-100 btn-sm">Читати</a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+      });
+    } catch (e) {
+      document.getElementById('loadingText').innerHTML = "<span class='text-danger'>Помилка підключення до БД</span>";
+    }
+  };
+</script>
+</body>
+</html>

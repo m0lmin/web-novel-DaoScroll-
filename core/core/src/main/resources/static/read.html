@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="uk" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <title>Читання - DaoScrolls</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav class="navbar navbar-light bg-light border-bottom p-2">
+    <div class="container">
+        <a href="index.html" class="btn btn-outline-primary btn-sm">На головну</a>
+        <span id="headerTitle" class="fw-bold">Завантаження...</span>
+        <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="offcanvas" data-bs-target="#settings">Налаштування</button>
+    </div>
+</nav>
+
+<div class="container mt-5" style="max-width: 700px;">
+    <div id="chapterContent" class="fs-5" style="line-height: 1.6; text-align: justify;">
+    </div>
+
+    <div class="d-flex justify-content-between mt-5 pb-5 border-top pt-4">
+        <a href="#" id="prevBtn" class="btn btn-secondary btn-sm disabled">Попередня</a>
+        <a href="#" id="nextBtn" class="btn btn-primary btn-sm disabled">Наступна</a>
+    </div>
+</div>
+
+<div class="offcanvas offcanvas-end" id="settings">
+    <div class="offcanvas-header border-bottom">
+        <h5 class="offcanvas-title">Вигляд тексту</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body">
+        <button class="btn btn-outline-dark w-100 mb-3" onclick="toggleTheme()">Змінити тему</button>
+        <p class="small text-muted">Використовуйте стандартні налаштування браузера для масштабування.</p>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

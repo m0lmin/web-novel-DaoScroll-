@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="uk" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вхід - DaoScrolls</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg border-bottom p-3" style="background-color: var(--navbar-bg);">
+    <div class="container">
+        <a class="navbar-brand fw-bold text-primary" href="index.html">📜 DaoScrolls</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" href="catalog.html">Каталог</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Форум</a></li>
+            </ul>
+            <div class="d-flex align-items-center">
+                <button class="btn btn-outline-secondary btn-sm me-3" onclick="toggleTheme()" title="Змінити тему">
+                    <i class="bi bi-moon-fill"></i>
+                </button>
+                <a class="btn btn-outline-primary btn-sm" href="index.html">На головну</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <div class="card simple-card mx-auto p-4" style="max-width: 450px;">
+
+        <div id="loginSection">
+            <h4 class="fw-bold mb-4 text-center">Вхід у систему</h4>
+            <form onsubmit="doLogin(event)">
+                <div class="mb-3">
+                    <label class="form-label">Email або Логін</label>
+                    <input type="text" class="form-control" required placeholder="Введіть дані...">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Пароль</label>
+                    <input type="password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 mb-3" style="background-color: #c62828; border: none;">Увійти</button>
+                <div class="text-center">
+                    <span class="text-muted small">Не маєте акаунту?</span> <a href="#" onclick="switchTab('register')" class="small">Зареєструватися</a>
+                </div>
+            </form>
+        </div>
+
+        <div id="registerSection" style="display: none;">
+            <h4 class="fw-bold mb-4 text-center">Реєстрація</h4>
+            <form onsubmit="doLogin(event)">
+                <div class="mb-3">
+                    <label class="form-label">Ім'я користувача</label>
+                    <input type="text" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Пароль</label>
+                    <input type="password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-success w-100 mb-3" style="background-color: #2e7d32; border: none;">Створити акаунт</button>
+                <div class="text-center">
+                    <span class="text-muted small">Вже є акаунт?</span> <a href="#" onclick="switchTab('login')" class="small">Увійти</a>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/main.js"></script>
+<script>
+    function switchTab(tab) {
+        document.getElementById('loginSection').style.display = tab === 'login' ? 'block' : 'none';
+        document.getElementById('registerSection').style.display = tab === 'register' ? 'block' : 'none';
+    }
+
+    function doLogin(e) {
+        e.preventDefault();
+        localStorage.setItem('userId', '1'); // Імітація входу
+        window.location.href = 'profile.html';
+    }
+</script>
+</body>
+</html>
